@@ -1,0 +1,190 @@
+# System Architecture
+
+**Project:** polivoks-midi-core
+
+---
+
+# 1. Purpose
+
+The purpose of this project is to convert incoming MIDI Note messages into keyboard contact signals for the Polivoks synthesizer.
+
+The firmware is designed around a modular architecture where each software component performs exactly one task.
+
+The design emphasizes simplicity, reliability and maintainability.
+
+---
+
+# 2. System Overview
+
+```
+             MIDI IN
+                 │
+                 ▼
+          +---------------+
+          |  MidiParser   |
+          +---------------+
+                 │
+                 ▼
+          +---------------+
+          |KeyboardEngine |
+          +---------------+
+                 │
+                 ▼
+      +----------------------+
+      | ShiftRegisterDriver  |
+      +----------------------+
+                 │
+                 ▼
+             SPI Interface
+                 │
+                 ▼
+          6 × 74HC595 Registers
+                 │
+                 ▼
+      Polivoks Keyboard Contacts
+```
+
+---
+
+# 3. Module Description
+
+## Main
+
+Initializes the system and connects all software modules together.
+
+Responsibilities:
+
+* hardware initialization;
+* module initialization;
+* execution of the main program loop.
+
+---
+
+## MidiParser
+
+Receives raw MIDI bytes and decodes MIDI messages.
+
+Supported in Version 1.0:
+
+* Note On
+* Note Off
+
+Output:
+
+```
+noteOn(noteNumber)
+noteOff(noteNumber)
+```
+
+---
+
+## KeyboardEngine
+
+Converts MIDI note numbers into keyboard positions.
+
+Maintains the complete keyboard state.
+
+Responsibilities:
+
+* note mapping;
+* keyboard state buffer;
+* polyphony management;
+* bit manipulation.
+
+The module is completely independent from Arduino libraries.
+
+---
+
+## ShiftRegisterDriver
+
+Transfers the keyboard state buffer to the external shift registers.
+
+Responsibilities:
+
+* SPI communication;
+* register update;
+* LATCH pulse generation.
+
+The driver has no knowledge of MIDI or keyboard mapping.
+
+---
+
+# 4. Data Flow
+
+The processing sequence is:
+
+```
+MIDI Message
+        │
+        ▼
+MidiParser
+        │
+        ▼
+KeyboardEngine
+        │
+        ▼
+Keyboard State Buffer
+        │
+        ▼
+ShiftRegisterDriver
+        │
+        ▼
+74HC595 Outputs
+        │
+        ▼
+Keyboard Contacts
+```
+
+Each module only communicates with the adjacent layer.
+
+---
+
+# 5. Design Principles
+
+The architecture follows these principles:
+
+* one module — one responsibility;
+* minimal coupling;
+* clear interfaces;
+* no duplicated functionality;
+* platform-independent core logic;
+* deterministic execution.
+
+---
+
+# 6. Version 1.0 Scope
+
+Version 1.0 includes:
+
+* MIDI Note On / Note Off support;
+* 48-key keyboard;
+* full polyphony;
+* active LOW outputs;
+* six cascaded 74HC595 shift registers;
+* Arduino Uno reference platform.
+
+The objective of Version 1.0 is to provide a stable reference implementation.
+
+---
+
+# 7. Future Development
+
+The architecture is intentionally designed to allow future expansion.
+
+Potential future features include:
+
+* configurable keyboard profiles;
+* support for additional synthesizers;
+* diagnostics;
+* MIDI Panic;
+* configuration storage.
+
+These extensions should require minimal changes to the core architecture.
+
+---
+
+# Summary
+
+The firmware consists of a small number of independent modules with clearly defined responsibilities.
+
+This architecture simplifies development, testing and future maintenance while providing a solid foundation for future project growth.
