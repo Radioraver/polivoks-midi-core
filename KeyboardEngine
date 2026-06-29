@@ -1,0 +1,170 @@
+# KeyboardEngine
+
+**Project:** polivoks-midi-core
+
+---
+
+# Purpose
+
+KeyboardEngine is responsible for maintaining the logical state of the Polivoks keyboard.
+
+The module converts MIDI note numbers into keyboard positions and updates the internal keyboard state buffer.
+
+It contains no hardware-specific code and does not access Arduino libraries.
+
+---
+
+# Responsibilities
+
+KeyboardEngine shall:
+
+* convert MIDI note numbers to keyboard indices;
+* maintain the keyboard state buffer;
+* support full polyphony;
+* generate bit masks for individual keys;
+* provide the current keyboard state to the ShiftRegisterDriver.
+
+KeyboardEngine shall not:
+
+* parse MIDI messages;
+* communicate through SPI;
+* control GPIO pins;
+* access shift registers directly.
+
+---
+
+# Keyboard Configuration
+
+| Parameter       |       Value |
+| --------------- | ----------: |
+| First MIDI note |     36 (C2) |
+| Last MIDI note  |     83 (B5) |
+| Number of keys  |          48 |
+| Output type     |  Active LOW |
+| Shift registers | 6 × 74HC595 |
+
+Notes outside the supported range are ignored.
+
+---
+
+# Internal Buffer
+
+The keyboard state is stored as six bytes.
+
+```text
+Byte 0  -> Keys 0...7
+Byte 1  -> Keys 8...15
+Byte 2  -> Keys 16...23
+Byte 3  -> Keys 24...31
+Byte 4  -> Keys 32...39
+Byte 5  -> Keys 40...47
+```
+
+At power-up all bits are set to logical '1'.
+
+This represents the released state of every key.
+
+---
+
+# Public Interface
+
+```cpp
+void begin();
+
+void noteOn(uint8_t midiNote);
+
+void noteOff(uint8_t midiNote);
+
+const uint8_t* getBuffer() const;
+```
+
+---
+
+# Note Mapping
+
+Keyboard index is calculated as:
+
+```text
+keyIndex = midiNote - FIRST_NOTE
+```
+
+Example:
+
+| MIDI Note | Keyboard Index |
+| --------: | -------------: |
+|        36 |              0 |
+|        37 |              1 |
+|        48 |             12 |
+|        60 |             24 |
+|        83 |             47 |
+
+---
+
+# Bit Mapping
+
+Each key occupies one bit inside the buffer.
+
+```text
+Byte = keyIndex / 8
+
+Bit  = keyIndex % 8
+```
+
+The least significant bit represents the first key within each byte.
+
+---
+
+# Key State
+
+Released:
+
+```text
+1
+```
+
+Pressed:
+
+```text
+0
+```
+
+This matches the Active LOW hardware interface.
+
+---
+
+# Polyphony
+
+The module supports unlimited polyphony within the available keyboard range.
+
+Each key is processed independently.
+
+Changing one key never affects any other key.
+
+---
+
+# Error Handling
+
+If a MIDI note is outside the supported range:
+
+* the request is ignored;
+* the keyboard state remains unchanged.
+
+No error is generated.
+
+---
+
+# Design Notes
+
+KeyboardEngine is completely independent from the target hardware.
+
+The module can be compiled on any platform supporting standard C++.
+
+This greatly simplifies testing and future migration to other AVR microcontrollers.
+
+---
+
+# Summary
+
+KeyboardEngine is the logical core of the project.
+
+It converts MIDI note numbers into keyboard states while remaining completely isolated from hardware implementation details.
