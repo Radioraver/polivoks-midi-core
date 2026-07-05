@@ -1,0 +1,62 @@
+# KeyboardEngine
+
+## Purpose
+
+The **KeyboardEngine** module is responsible for storing and updating the current keyboard state.
+
+It is the central part of the firmware logic and maintains an internal buffer representing the state of all keyboard outputs.
+
+---
+
+## Description
+
+KeyboardEngine does not communicate directly with the hardware.
+
+Its only responsibility is to update the internal keyboard buffer according to incoming MIDI messages.
+
+The transfer of this buffer to the shift registers is handled by a separate module.
+
+---
+
+## Public Interface
+
+The module provides functions for:
+
+* initializing the internal buffer;
+* pressing a key;
+* releasing a key;
+* clearing the buffer;
+* returning a pointer to the buffer for use by other modules.
+
+---
+
+## Operating Principle
+
+The internal keyboard buffer consists of six bytes.
+
+Each bit represents one keyboard output.
+
+When a **Note On** or **Note Off** message is received, the corresponding bit is updated.
+
+After the buffer has been modified, its contents can be transferred to the ShiftRegisterDriver module.
+
+---
+
+## Limitations
+
+Version 1.0 supports:
+
+* 48 keyboard outputs;
+* MIDI **Note On** messages;
+* MIDI **Note Off** messages.
+
+Velocity and other MIDI features are not implemented in this version.
+
+---
+
+## Related Files
+
+* KeyboardEngine.h
+* KeyboardEngine.cpp
+* ShiftRegisterDriver.cpp
+* main.cpp
