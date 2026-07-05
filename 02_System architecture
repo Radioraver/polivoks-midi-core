@@ -1,0 +1,141 @@
+# System Architecture
+
+## Purpose
+
+This document describes the overall software architecture of the **Polivoks MIDI Interface** project, the interaction between software modules and the design principles used throughout the firmware.
+
+---
+
+## General Architecture
+
+The firmware is built using a modular architecture.
+
+Each module has a single responsibility and communicates with other modules through a simple public interface.
+
+```text
+          MIDI IN
+             │
+             ▼
+      +---------------+
+      |  MidiParser   |
+      +---------------+
+             │
+             ▼
+      +----------------+
+      | KeyboardEngine |
+      +----------------+
+             │
+             ▼
+      +----------------------+
+      | ShiftRegisterDriver  |
+      +----------------------+
+             │
+             ▼
+      74HC595 Shift Registers
+             │
+             ▼
+     Polivoks Keyboard Matrix
+```
+
+---
+
+## Software Modules
+
+### Main Program
+
+Controls the overall program flow.
+
+Responsibilities:
+
+* initialize all modules;
+* execute the main program loop;
+* coordinate data exchange between modules.
+
+---
+
+### MidiParser
+
+Receives and processes incoming MIDI messages.
+
+This module does not control the keyboard directly.
+
+Its only responsibility is to decode MIDI events and provide them to the rest of the system.
+
+---
+
+### KeyboardEngine
+
+Maintains the current keyboard state.
+
+The module uses an internal 48-bit buffer where each bit represents one keyboard output.
+
+KeyboardEngine is completely independent of the hardware implementation.
+
+---
+
+### ShiftRegisterDriver
+
+Transfers the keyboard buffer to the 74HC595 shift register chain using the SPI interface.
+
+The module does not interpret MIDI messages and has no knowledge of musical notes.
+
+---
+
+## Module Interaction
+
+Each module performs only its own task.
+
+Information is exchanged exclusively through public interfaces.
+
+Modules never access each other's internal data directly.
+
+---
+
+## Data Flow
+
+Processing of a single MIDI message follows this sequence:
+
+1. MidiParser receives a MIDI message.
+2. Main Program determines the message type.
+3. KeyboardEngine updates the keyboard state.
+4. ShiftRegisterDriver transfers the updated buffer to the 74HC595 chain.
+5. The shift register outputs emulate the original keyboard contacts.
+
+---
+
+## Design Principles
+
+* One module — one responsibility.
+* Minimal dependencies between modules.
+* Simple and stable public interfaces.
+* Independent module testing.
+* Easy future expansion without changing the core architecture.
+
+---
+
+## Source Code Structure
+
+```text
+src/
+    main.cpp
+    KeyboardEngine.cpp
+    ShiftRegisterDriver.cpp
+    MidiParser.cpp
+
+include/
+    KeyboardEngine.h
+    ShiftRegisterDriver.h
+    MidiParser.h
+```
+
+---
+
+## Related Documents
+
+* README.md
+* 01_Project_Goals.md
+* 03_Design_Review_v1.0.md
+* 04_KeyboardEngine.md
+* 05_ShiftRegisterDriver.md
+* 06_MidiParser.md
+* 07_MainProgram.md
