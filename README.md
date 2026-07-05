@@ -1,92 +1,70 @@
-# polivoks-midi-core
-polivoks-midi-core
-Reference MIDI Interface Core for the Polivoks Synthesizer
- 
-Overview
-polivoks-midi-core is an open-source embedded project aimed at developing a reliable, maintainable and well-documented MIDI interface for the legendary Soviet analog synthesizer Polivoks.
-The project is designed as a reference implementation rather than just another Arduino sketch.
-Every architectural decision is documented and explained. The primary goal is long-term maintainability, portability and educational value.
- 
-Project Goals
-•	Reliable MIDI to keyboard conversion.
-•	Full polyphony.
-•	Clean modular architecture.
-•	Complete engineering documentation.
-•	Easy hardware replication.
-•	High code readability.
-•	Portability across AVR microcontrollers.
-•	Future support for additional vintage synthesizers.
- 
-Version 1.0 Objectives
-The first stable release implements:
-•	MIDI Note On / Note Off
-•	48-key Polivoks keyboard
-•	Active LOW outputs
-•	Six cascaded 74HC595 shift registers
-•	Full polyphony
-•	Arduino Uno reference platform
-•	Modular software architecture
-•	Complete documentation
-Version 1.0 serves as the reference implementation for future development.
- 
-Software Architecture
-             MIDI IN
-                 │
-                 ▼
-          MidiParser
-                 │
-                 ▼
-        KeyboardEngine
-                 │
-                 ▼
-    ShiftRegisterDriver
-                 │
-                 ▼
-          6 × 74HC595
-                 │
-                 ▼
-      Polivoks Keyboard Contacts
-Each software module has exactly one responsibility.
- 
-Development Principles
-This project follows several engineering principles:
-•	Documentation First
-•	Architecture First
-•	Reliability First
-•	Readability First
-•	Maintainability
-•	Testability
-•	Portability
-•	Modular Design
-Every non-trivial design decision should be documented before implementation.
- 
-Repository Structure
-docs/
-firmware/
-hardware/
-tests/
-tools/
-Documentation is considered part of the source code.
- 
-Roadmap
-Version 1.0
-Reference implementation for Polivoks.
-Version 1.1
-Minor improvements, diagnostics and maintenance features.
-Version 2.0
-Support for configurable keyboard profiles.
-Version 3.x
-Universal framework for vintage synthesizer MIDI interfaces.
- 
-License
-License selection (MIT or GPLv3) will be finalized before the first public release.
- 
-Project Status
-Current Stage
-Engineering documentation and architecture design.
-No implementation is accepted before documentation.
- 
-"First understand the system. Then write the code."
+# Polivoks MIDI Interface
 
-<img width="467" height="741" alt="image" src="https://github.com/user-attachments/assets/b4c9b3c3-cc44-407c-8829-12e70e71ad12" />
+## Призначення
 
+**Polivoks MIDI Interface** — це відкритий проєкт, метою якого є створення простого, надійного та модульного MIDI-інтерфейсу для радянського аналогового синтезатора **Полівокс** на базі Arduino.
+
+Проєкт орієнтований на максимальну простоту архітектури, зрозумілий код і можливість подальшого розширення без зміни базової структури.
+
+---
+
+## Основні цілі проєкту
+
+* Реалізувати прийом MIDI-повідомлень **Note On** та **Note Off**.
+* Емулювати роботу штатної клавіатури Полівокса за допомогою зсувних регістрів 74HC595.
+* Побудувати модульну архітектуру, де кожен програмний модуль виконує лише одну задачу.
+* Забезпечити простоту читання, супроводу та подальшого розвитку коду.
+* Використовувати стандартні бібліотеки Arduino та мінімізувати залежність від апаратної платформи.
+
+---
+
+## Принципи розробки
+
+Під час створення проєкту використовуються такі принципи:
+
+* Простота важливіша за складні оптимізації.
+* Робочий код важливіший за надмірну документацію.
+* Один модуль — одна відповідальність.
+* Код повинен бути максимально самодокументованим.
+* Документація пояснює прийняті інженерні рішення, а не дублює код.
+* Кожна нова функція повинна легко інтегруватися без зміни існуючої архітектури.
+
+---
+
+## Поточний стан проєкту
+
+Версія **1.0.0** включає:
+
+* прийом MIDI-команд **Note On** та **Note Off**;
+* підтримку одного MIDI-каналу;
+* керування 48 виходами через каскад із шести регістрів 74HC595;
+* модулі:
+
+  * KeyboardEngine;
+  * ShiftRegisterDriver;
+  * MidiParser;
+  * Main Program.
+
+---
+
+## План розвитку
+
+У наступних версіях можливе додавання:
+
+* вибору MIDI-каналу;
+* підтримки Velocity;
+* режимів Mono/Poly;
+* додаткових апаратних платформ;
+* підтримки інших аналогових синтезаторів із подібною архітектурою клавіатури.
+
+---
+
+## Пов'язані документи
+
+* README.md
+* 02_System_Architecture.md
+* 03_Design_Review_v1.0.md
+* 04_KeyboardEngine.md
+* 05_ShiftRegisterDriver.md
+* 06_MidiParser.md
+* 07_MainProgram.md
