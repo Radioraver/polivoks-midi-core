@@ -1,0 +1,72 @@
+# Project Goals
+
+## Purpose
+
+This document defines the primary objectives of the **Polivoks MIDI Interface** project and establishes the engineering principles used throughout its development.
+
+---
+
+## Primary Goals
+
+* Develop a reliable MIDI interface for the Polivoks synthesizer.
+* Emulate the original keyboard using 74HC595 shift registers.
+* Build a modular firmware architecture based on independent software modules.
+* Keep the firmware simple, readable and easy to maintain.
+* Use standard Arduino libraries whenever possible.
+
+---
+
+## Engineering Principles
+
+The project follows several fundamental rules:
+
+* One module — one responsibility.
+* Simplicity over unnecessary complexity.
+* Readability is more important than optimization.
+* Every module should be independently testable.
+* Public interfaces should remain small and stable.
+* The firmware should be easy to extend without modifying the existing architecture.
+
+---
+
+## Version 1.0 Objectives
+
+The first public release provides:
+
+* MIDI Note On support.
+* MIDI Note Off support.
+* One MIDI channel.
+* 48 keyboard outputs.
+* SPI communication with 74HC595 shift registers.
+* Modular source code.
+
+---
+
+## Long-Term Goals
+
+Future versions may include:
+
+* Selectable MIDI channel.
+* Velocity support.
+* Mono and Poly operating modes.
+* Additional microcontroller platforms.
+* Support for other vintage analog synthesizers.
+
+---
+
+## Success Criteria
+
+Version 1.0 is considered successful if it:
+
+* receives MIDI Note On and Note Off messages;
+* correctly updates the internal keyboard state;
+* transfers keyboard data to the shift register chain;
+* reliably emulates the original Polivoks keyboard.
+
+---
+
+## Related Documents
+
+* README.md
+* 02_System_Architecture.md
+* 03_Design_Review_v1.0.md
