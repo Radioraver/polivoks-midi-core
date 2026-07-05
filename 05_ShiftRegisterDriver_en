@@ -1,0 +1,57 @@
+# ShiftRegisterDriver
+
+## Purpose
+
+The **ShiftRegisterDriver** module is responsible for transferring the keyboard state to the 74HC595 shift register chain.
+
+The module only transfers data and does not interpret its contents.
+
+---
+
+## Description
+
+ShiftRegisterDriver receives a pointer to the keyboard buffer and transmits its contents through the SPI interface.
+
+After the transfer is complete, a LATCH pulse updates all register outputs simultaneously.
+
+---
+
+## Public Interface
+
+The module provides functions for:
+
+* initializing the SPI interface;
+* configuring the control pins;
+* transferring the keyboard buffer to the shift register chain;
+* updating the register outputs after the transfer is complete.
+
+---
+
+## Operating Principle
+
+During each update, the module transfers six bytes through the SPI interface.
+
+The data is shifted through the entire register chain.
+
+After the last byte has been transmitted, a short LATCH pulse is generated, causing all outputs to update simultaneously.
+
+---
+
+## Limitations
+
+Version 1.0 supports:
+
+* a chain of six 74HC595 shift registers;
+* transmission of 48 bits of keyboard data;
+* hardware SPI communication.
+
+The module does not validate or modify the transmitted data.
+
+---
+
+## Related Files
+
+* ShiftRegisterDriver.h
+* ShiftRegisterDriver.cpp
+* KeyboardEngine.cpp
+* main.cpp
