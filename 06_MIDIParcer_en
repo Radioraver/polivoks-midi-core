@@ -1,0 +1,57 @@
+# MidiParser
+
+## Purpose
+
+The **MidiParser** module is responsible for receiving and processing MIDI messages.
+
+Its task is to read incoming MIDI data and provide the decoded message information to the main program.
+
+---
+
+## Description
+
+MidiParser uses the standard Arduino MIDI Library.
+
+The module receives MIDI messages, determines their type and provides access to the message type and note number.
+
+The module does not control the keyboard and does not communicate with the shift registers.
+
+---
+
+## Public Interface
+
+The module provides functions for:
+
+* initializing the MIDI interface;
+* receiving MIDI messages;
+* checking for new messages;
+* obtaining the MIDI message type;
+* obtaining the note number.
+
+---
+
+## Operating Principle
+
+During each iteration of the main program loop, the module checks whether a new MIDI message has been received.
+
+If a message is available, its type and note number become available for further processing by the main program.
+
+---
+
+## Limitations
+
+Version 1.0 supports:
+
+* MIDI **Note On** messages;
+* MIDI **Note Off** messages;
+* a single MIDI channel.
+
+Other MIDI message types are not processed in this version.
+
+---
+
+## Related Files
+
+* MidiParser.h
+* MidiParser.cpp
+* main.cpp
