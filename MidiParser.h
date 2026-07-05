@@ -1,5 +1,5 @@
-#ifndef MidiParser.h
-#define MidiParser.h
+#ifndef MIDI_PARSER_H
+#define MIDI_PARSER_H
 
 #include <Arduino.h>
 
