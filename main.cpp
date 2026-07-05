@@ -36,22 +36,24 @@ void setup()
 
 void loop()
 {
-    // Оновити MIDI
     midi.update();
 
-    // Обробка Note On
+    bool keyboardChanged = false;
+
     if (midi.isNoteOn())
     {
         keyboard.noteOn(midi.getNote());
-
-        shiftRegister.update(keyboard.getBuffer());
+        keyboardChanged = true;
     }
 
-    // Обробка Note Off
     if (midi.isNoteOff())
     {
         keyboard.noteOff(midi.getNote());
+        keyboardChanged = true;
+    }
 
+    if (keyboardChanged)
+    {
         shiftRegister.update(keyboard.getBuffer());
     }
 }
