@@ -1,0 +1,60 @@
+# Main Program
+
+## Purpose
+
+The Main Program is responsible for system initialization and coordination of all software modules.
+
+It does not process MIDI messages, control the keyboard or communicate directly with the shift registers.
+
+---
+
+## Description
+
+The Main Program creates all software module objects, performs their initialization and controls the execution sequence of the firmware.
+
+During the main program loop, it receives MIDI messages, updates the keyboard state and transfers the updated buffer to the shift register chain.
+
+---
+
+## Public Interface
+
+The Main Program uses the standard Arduino functions:
+
+* `setup()`;
+* `loop()`.
+
+All other functionality is implemented in separate software modules.
+
+---
+
+## Operating Principle
+
+After startup, the `setup()` function initializes all software modules.
+
+The `loop()` function continuously performs:
+
+* MIDI message reception;
+* keyboard state update;
+* transmission of the updated keyboard buffer to the 74HC595 shift register chain.
+
+The Main Program therefore coordinates the operation of the entire firmware.
+
+---
+
+## Limitations
+
+Version 1.0 uses sequential event processing.
+
+All modules operate within a single main loop without multitasking or interrupt-driven processing.
+
+---
+
+## Related Files
+
+* main.cpp
+* KeyboardEngine.h
+* KeyboardEngine.cpp
+* ShiftRegisterDriver.h
+* ShiftRegisterDriver.cpp
+* MidiParser.h
+* MidiParser.cpp
