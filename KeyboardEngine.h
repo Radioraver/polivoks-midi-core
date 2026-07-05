@@ -1,5 +1,5 @@
-#ifndef KeyboardEngine.h
-#define KeyboardEngine.h
+#ifndef KEYBOARD_ENGINE_H
+#define KEYBOARD_ENGINE_H
 
 #include <stdint.h>
 
