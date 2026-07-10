@@ -37,7 +37,6 @@ void ShiftRegisterDriver::latch()
     digitalWrite(LATCH_PIN, HIGH);
     delayMicroseconds(1);
     digitalWrite(LATCH_PIN, LOW);
-    delayMicroseconds(1);
-    digitalWrite(LATCH_PIN, HIGH);
+    
 }
 ```
