@@ -8,6 +8,7 @@ class KeyboardEngine
 public:
     static constexpr uint8_t FIRST_NOTE = 36;
     static constexpr uint8_t KEY_COUNT = 48;
+
     static constexpr uint8_t BYTE_COUNT = KEY_COUNT / 8;
 
     static constexpr uint8_t KEY_PRESSED   = 0;
