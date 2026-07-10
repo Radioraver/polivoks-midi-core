@@ -25,12 +25,12 @@ uint8_t KeyboardEngine::keyToBit(uint8_t keyIndex) const { return keyIndex % 8; 
 
 void KeyboardEngine::pressKey(uint8_t keyIndex)
 {
-    state[keyToByte(keyIndex)] &= ~(1 << keyToBit(keyIndex));
+    state[keyToByte(keyIndex)] &= ~(1U << keyToBit(keyIndex));
 }
 
 void KeyboardEngine::releaseKey(uint8_t keyIndex)
 {
-    state[keyToByte(keyIndex)] |= (1 << keyToBit(keyIndex));
+    state[keyToByte(keyIndex)] |= (1U << keyToBit(keyIndex));
 }
 
 void KeyboardEngine::noteOn(uint8_t midiNote)
