@@ -14,7 +14,7 @@ public:
     void update(const uint8_t* buffer);
 
 private:
-    static const uint8_t LATCH_PIN = 10;
+    static constexpr uint8_t LATCH_PIN = 10;
 
     void latch();
 };
