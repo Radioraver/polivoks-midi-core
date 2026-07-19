@@ -2,9 +2,12 @@
 
 Button::Button(uint8_t pin)
     : buttonPin(pin),
-      currentState(HIGH),
-      previousState(HIGH),
-      pressedEvent(false)
+      rawState(HIGH),
+      lastRawState(HIGH),
+      stableState(HIGH),
+      pressedEvent(false),
+      releasedEvent(false),
+      lastChangeTime(0)
 {
 }
 
@@ -15,21 +18,49 @@ void Button::begin()
 
 void Button::update()
 {
-    previousState = currentState;
+    pressedEvent = false;
+    releasedEvent = false;
 
-    currentState = digitalRead(buttonPin);
+    rawState = digitalRead(buttonPin);
 
-    pressedEvent =
-        (previousState == HIGH) &&
-        (currentState == LOW);
+    // Контакт змінився
+    if (rawState != lastRawState)
+    {
+        lastChangeTime = millis();
+
+        lastRawState = rawState;
+    }
+
+    // Час Debounce минув
+    if ((millis() - lastChangeTime) >= DEBOUNCE_TIME)
+    {
+        if (stableState != rawState)
+        {
+            stableState = rawState;
+
+            if (stableState == LOW)
+            {
+                pressedEvent = true;
+            }
+            else
+            {
+                releasedEvent = true;
+            }
+        }
+    }
 }
 
 bool Button::isPressed() const
 {
-    return currentState == LOW;
+    return stableState == LOW;
 }
 
 bool Button::wasPressed() const
 {
     return pressedEvent;
+}
+
+bool Button::wasReleased() const
+{
+    return releasedEvent;
 }
