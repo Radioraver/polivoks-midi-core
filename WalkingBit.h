@@ -33,6 +33,8 @@ private:
     void clearBuffer();
 
     void setBit(uint8_t bit);
+
+    void printState() const;
 };
 
 #endif
