@@ -19,9 +19,11 @@ void WalkingBit::begin()
 {
     clearBuffer();
 
-    setBit(0);
+    setBit(currentBit);
 
     shiftRegister.update(buffer);
+
+    printState();
 }
 
 //--------------------------------------------------
@@ -49,6 +51,8 @@ void WalkingBit::update()
     setBit(currentBit);
 
     shiftRegister.update(buffer);
+
+    printState();
 }
 
 //--------------------------------------------------
@@ -59,19 +63,46 @@ void WalkingBit::clearBuffer()
 {
     for (uint8_t i = 0; i < BYTE_COUNT; i++)
     {
-        buffer[i] = 0x00;
+        buffer[i] = 0xFF;
     }
 }
 
 //--------------------------------------------------
-// Set one output bit
+// Set active output
 //--------------------------------------------------
 
 void WalkingBit::setBit(uint8_t bit)
 {
     uint8_t byteIndex = bit / 8;
+    uint8_t bitIndex  = bit % 8;
 
-    uint8_t bitIndex = bit % 8;
+    buffer[byteIndex] &= ~(1 << bitIndex);
+}
 
-    buffer[byteIndex] |= (1 << bitIndex);
+//--------------------------------------------------
+// Print current state
+//--------------------------------------------------
+
+void WalkingBit::printState() const
+{
+    Serial.print("Key ");
+
+    if (currentBit < 10)
+    {
+        Serial.print('0');
+    }
+
+    Serial.print(currentBit);
+
+    Serial.print("   MIDI ");
+
+    Serial.print(currentBit + 36);
+
+    Serial.print("   Byte ");
+
+    Serial.print(currentBit / 8);
+
+    Serial.print("   Bit ");
+
+    Serial.println(currentBit % 8);
 }
