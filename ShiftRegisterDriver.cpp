@@ -39,4 +39,4 @@ void ShiftRegisterDriver::latch()
     digitalWrite(LATCH_PIN, LOW);
     
 }
-```
+
